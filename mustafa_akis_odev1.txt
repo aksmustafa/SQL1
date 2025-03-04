@@ -1,0 +1,75 @@
+--a
+
+SELECT 
+firstname,
+lastname, 
+salary 
+FROM employees
+
+/*ilgili kolonlar select kısmında seçildi ve tablo belirtildi.
+"John"	"Doe"	55000.00
+"Jane"	"Smith"	65000.00
+"Sam"	"Brown"	52000.00
+"Lisa"	"White"	70000.00
+"Mark"	"Black"	75000.00
+"Lucy"	"Green"	60000.00
+*/
+
+--b
+SELECT DISTINCT d.departmentname 
+FROM employees e
+JOIN departments d ON e.departmentid = d.departmentid;
+
+/*employees tablosunda kullanılan departmanları, departmanlar tablosundaki indexler ile eşleştirip
+ilgili departmanın ismini getirdik.
+"Finance"
+"IT"
+"HR"
+*/
+
+--c
+SELECT
+    e.firstname,
+	e.lastname,
+	e.salary,
+    d.departmentname
+FROM
+    employees e
+INNER JOIN
+    departments d ON e.departmentid = d.departmentid
+WHERE
+    d.departmentname = 'IT';
+
+/*
+"John"	"Doe"	55000.00	"IT"
+"Sam"	"Brown"	52000.00	"IT"
+"Mark"	"Black"	75000.00	"IT"
+*/
+
+
+--SELECT * FROM departments WHERE departmentname = 'IT';
+
+--d
+SELECT * FROM employees ORDER BY salary DESC
+
+/*employees tablosunda tüm çalışanların maaşa göre büyükten küçüğe sıralanması istenmiş. 
+Bu yüzden order by salary ve desc komutu kullanıldı.
+5	"Mark"	"Black"	50	1	75000.00	"2015-11-05"
+4	"Lisa"	"White"	35	3	70000.00	"2019-03-18"
+2	"Jane"	"Smith"	45	2	65000.00	"2018-07-20"
+6	"Lucy"	"Green"	40	2	60000.00	"2017-10-10"
+1	"John"	"Doe"	30	1	55000.00	"2020-01-15"
+3	"Sam"	"Brown"	28	1	52000.00	"2021-04-25"
+*/
+
+--e
+SELECT firstname || ' ' ||lastname AS fullname FROM employees ORDER BY firstname ASC
+
+/*İsim ve soyisim bir boşluk ile birleştirilip tam ad elde edilmiştir.
+"Jane Smith"
+"John Doe"
+"Lisa White"
+"Lucy Green"
+"Mark Black"
+"Sam Brown"
+*/
