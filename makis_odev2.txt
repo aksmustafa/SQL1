@@ -1,0 +1,70 @@
+
+-- SORU 1
+SELECT *
+FROM invoice
+WHERE
+  --customer_id IS NOT NULL
+  billing_address IS NULL
+  OR billing_city IS NULL
+  OR billing_state IS NULL
+  OR billing_country IS NULL
+  OR billingpostal_code IS NULL
+  OR total IS NULL;
+
+ ----------
+ --209 satır gelmekte, hepsi boş denilmiş ancak 0 değeri geliyor. ID kolonları harici herhangi boş değer olarak algılayıp cevapladım.
+ ----------
+ 
+ ---------------------------------------
+--SORU 2
+--Total satırlarını, Total satırlarının 2 katı ile kontrol
+
+SELECT *, (TOTAL * 2) AS TOTAL_2
+FROM invoice
+ORDER BY TOTAL_2 DESC;
+
+/*
+404	6	"2013-11-13 00:00:00"	"Rilsk  3174/6"	"Prague"		"Czech Republic"	"14300"	25.86	51.72
+299	26	"2012-08-05 00:00:00"	"2211 W Berry Street"	"Fort Worth"	"TX"	"USA"	"76110"	23.86	47.72
+194	46	"2011-04-28 00:00:00"	"3 Chatham Street"	"Dublin"	"Dublin"	"Ireland"		21.86	43.72
+96	45	"2010-02-18 00:00:00"	"Erzs bet krt. 58."	"Budapest"		"Hungary"	"H-1073"	21.86	43.72
+89	7	"2010-01-18 00:00:00"	"Rotenturmstra e 4, 1010 Innere Stadt"	"Vienne"		"Austria"	"1010"	18.86	37.72
+*/
+-----------------------------------------
+
+--SORU 3
+/*
+Adres kolonundaki verileri, soldan 3 karakter ve sağdan 4 karakter alarak
+birleştirmeniz ve "Açık Adres" olarak yazmanız isteniyor. Ayrıca, bu yeni açık adresi
+2013 yılı ve 8. ay’a göre filtrelemeniz gerekiyor.
+*/
+
+--yöntem1
+SELECT 
+billing_address, 
+CONCAT ( LEFT(billing_address,3), ' ', RIGHT(billing_address,4)) AS acik_adres
+FROM
+	invoice
+WHERE 
+	invoice_date BETWEEN '2013-07-31' AND '2013-09-01';
+
+--yöntem2
+SELECT
+    billing_address,
+    SUBSTR(billing_address, 1, 3) AS ilk_uc,
+    SUBSTR(billing_address, LENGTH(billing_address) - 3, 4) AS son_dort,
+    SUBSTR(billing_address, 1, 3) || ' ' || SUBSTR(billing_address, LENGTH(billing_address) - 3, 4) AS acik_adres
+FROM
+    invoice
+WHERE 
+	invoice_date BETWEEN '2013-07-31' AND '2013-09-01';
+
+/*
+"3 Chatham Street"	"3 C"	"reet"	"3 C reet"
+"Lijnbaansgracht 120bg"	"Lij"	"20bg"	"Lij 20bg"
+"C/ San Bernardo 85"	"C/ "	"o 85"	"C/  o 85"
+"110 Raeburn Pl"	"110"	"n Pl"	"110 n Pl"
+"Av. Brigadeiro Faria Lima, 2170"	"Av."	"2170"	"Av. 2170"
+"Rua Dr. Falc o Filho, 155"	"Rua"	" 155"	"Rua  155"
+"162 E Superior Street"	"162"	"reet"	"162 reet"
+*/
